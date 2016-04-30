@@ -11,13 +11,33 @@ from PyQt5.QtCore import QCoreApplication
 from Tix import Grid
 from PyQt5.Qt import QLabel
 from QCustomWidget import *
+import run
+import ifModule
+from BasicVisual.CVModules import ifCreator
 
 class Capture():
-    def __init__(self):
+    def __init__(self, ):
         self.capturing = False
         self.c = cv2.VideoCapture(0)
 
-    def startCapture(self):
+    def startCapture(self, actionList):
+        
+        ifModules = []
+        
+        for action in actionList:
+            components = {}
+            components["module"] = action.getAlgo().replace(" ", "")
+            ifCondition = action.getIfCondition().replace(" ", "")
+            components["var"] = ifCondition
+            if 'Is' not in ifCondition:
+                components["comp"] = action.getComparisonOperator().replace(" ", "")
+                components["eq"] = action.getEquality()
+            else:
+                components["comp"] = "="
+                components["eq"] = action.getBooleanSelect().replace(" ","")
+            print components
+            ifModules.append(ifCreator.createIF(components))
+        '''
         print "pressed start"
         self.capturing = True
         cap = self.c
@@ -26,6 +46,12 @@ class Capture():
             cv2.imshow("Capture", frame)
             cv2.waitKey(5)
         cv2.destroyAllWindows()
+        '''
+        
+        run.execute(ifModules)
+        
+        #run.execute()
+        
 
     def endCapture(self):
         print "pressed End"
@@ -45,18 +71,23 @@ class Window(QWidget):
         QWidget.__init__(self)
         self.initUI()
     
+    def run(self):
+        self.capture.startCapture(self.actionList)
+    
     def initUI(self):
         #Possible options
         self.possibleAlgos = ["Face Detect", "Body Detect", "Motion Detect"]
-        self.possibleIfs = [["There is a face","Number of faces"],["There is a body","Number of bodies"],["There is motion"]]
-        self.possibleEquals = ["1","2","3"]
+        self.possibleIfs = [["There Is A Face","Number Of Faces"],["There Is A Body","Number Of Bodies"],["There Is Motion"]]
         self.possibleThen = ["Send to FB","Sent to Google Drive"]
         
+        
+        self.listWidget = QListWidget()
+        self.actionList = []
         
         self.capture = Capture()
         
         self.start_button = QPushButton('Start', self)
-        self.start_button.clicked.connect(self.capture.startCapture)
+        self.start_button.clicked.connect(self.run)
     
         self.end_button = QPushButton('End', self)
         self.end_button.clicked.connect(self.capture.endCapture)
@@ -113,6 +144,7 @@ class Window(QWidget):
         myQCustomQWidget.setAlgo(self.possibleAlgos[chosen_algo])
         myQCustomQWidget.setIfConditions(self.possibleIfs[chosen_algo])
         myQCustomQWidget.setThenConditions(self.possibleThen)
+        self.actionList.append(myQCustomQWidget)
         myQListWidgetItem = QListWidgetItem(self.listWidget)
         myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
         self.listWidget.addItem(myQListWidgetItem)

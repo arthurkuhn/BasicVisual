@@ -7,8 +7,7 @@ import cvController
 
 class MotionModule(object):
 
-    def __init__(self,cap):
-        self.cap = cap
+    def __init__(self):
         self.isMotion = False
         self.toPrint = True
         self.currentFrame = None
