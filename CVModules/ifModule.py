@@ -23,6 +23,8 @@ class IFModule(object):
         for exp in self.expressions:
             result = exp.execute(frame,picture)
             if(result == ""):
+                print "wait"
                 break
             if(exp.name == "Picture"):
                 picture = result
+                print "pictureTaken"

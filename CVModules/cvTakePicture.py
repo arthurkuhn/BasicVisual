@@ -16,7 +16,9 @@ class PictureModule(object):
     def execute(self,image,name):
 
         if(datetime.datetime.now() > self.time):
-            picName =  '../photos/' + datetime.datetime.now().strftime("%d_%B_%Y_%I:%M:%S%p")+'.jpg'
+            dateText =  datetime.datetime.now().strftime("%d_%B_%Y_%I_%M_%S%p")
+            picName = "../photos/" + dateText + ".jpg" 
+            print picName
             cv2.imwrite(picName, image)
             self.time = datetime.datetime.now() + datetime.timedelta(0,self.timeout)
             return picName

@@ -35,7 +35,9 @@ class Capture():
             else:
                 components["comp"] = "="
                 components["eq"] = action.getBooleanSelect().replace(" ","")
+            components["expression"] = action.getThenCondition().replace(" ","")
             print components
+            
             ifModules.append(ifCreator.createIF(components))
         '''
         print "pressed start"
@@ -78,7 +80,7 @@ class Window(QWidget):
         #Possible options
         self.possibleAlgos = ["Face Detect", "Body Detect", "Motion Detect"]
         self.possibleIfs = [["There Is A Face","Number Of Faces"],["There Is A Body","Number Of Bodies"],["There Is Motion"]]
-        self.possibleThen = ["Send to FB","Sent to Google Drive"]
+        self.possibleThen = ["Post Image To Facebook","Post Image To Dropbox"]
         
         
         self.listWidget = QListWidget()

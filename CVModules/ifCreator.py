@@ -10,7 +10,10 @@ import cvMotionModule
 import cvController
 import ifModule
 import cvTakePicture
-
+import fbModule
+import GmailModule
+import DropboxModule
+import SheetsModule
 
 def createIF( components):
     cvModule = None
@@ -27,8 +30,16 @@ def createIF( components):
     cond["var"] = components["var"]
     cond["comp"] = components["comp"]
     cond["eq"] = components["eq"]
+    cond["expression"] = components["expression"]
     
-    return ifModule.IFModule(cvModule,cond,"")
+    if(cond["expression"] == "PostImageToFacebook"):
+        expression.append(cvTakePicture.PictureModule(30))
+        expression.append(fbModule.FbModule())
+    if(cond["expression"] == "PostImageToDropbox"):
+        expression.append(cvTakePicture.PictureModule())
+        #expression.append(DropboxModule.DropboxModule())
+    
+    return ifModule.IFModule(cvModule,cond,expression)
 
             
         

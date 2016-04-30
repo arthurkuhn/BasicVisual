@@ -29,7 +29,11 @@ def execute(ifStatements):
 
     while(True):
         ret,image = cvControl.cap.read()
+        #print cvControl.cap.read()
+        #if(image is None):
+        #    continue
         image = imutils.resize(image, width=min(400, image.shape[1]))
+        
         for ifS in ifStatements:
             result,drawList = ifS.testCondition(image)
             if result:

@@ -1,4 +1,5 @@
 import facebook
+import cv2
 
 class FbModule:
     def __init__(self):
@@ -7,6 +8,7 @@ class FbModule:
             "access_token" : "EAADf9v7CVOoBAONgKPczcy9f3fKGNCleCQwKWkxVvtHZBdZBLH9UOveJdqCI8hGxhIROAqD3A17tVP4KBsXjX15Bo1hZA0I7hN5xVwbir5SYXD61dHMZAcyVvlDJUmlZB9rLrsF5QNC4kUFgTCpr8GCKfEvYzcn0ZD"
         }
         self.graph = self.getFbAPI(self.settings)
+        self.name = "FbModule"
 
     def getFbAPI(self, settings):
         graph = facebook.GraphAPI(settings['access_token'])
@@ -15,9 +17,9 @@ class FbModule:
         for page in response['data']:
             if page['id'] == settings['page_id']:
                 pageAccessToken = page['access_token']
-                graph = facebook.GraphAPI(page_access_token)
+                graph = facebook.GraphAPI(pageAccessToken)
         return graph
 
-    def postPhoto(self, photoPath, message):
+    def execute(self, image, photoPath):
         status = self.graph.put_photo(image=open(photoPath, 'rb'), message='Look at this cool photo!')
         print "Photo is posted."
