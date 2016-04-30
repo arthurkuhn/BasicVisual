@@ -1,4 +1,5 @@
 import smtplib
+import cv2
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEBase import MIMEBase
@@ -10,6 +11,7 @@ class GmailModule:
         self.receiver = receiver
         self.senderPassword = senderPassword
         self.message = MIMEMultipart()
+        self.name = "Gmail"
 
     def createMessage(self, subject, body):
         self.message['From'] = self.sender
@@ -40,3 +42,12 @@ class GmailModule:
            print "Successfully sent email"
         except smtplib.SMTPException:
            print "Error: unable to send email"
+
+    def execute(self, image, name):
+        subject = "Image from BasicVisual!"
+        body = "Here is an image from Basic Visual."
+        createMessage(subject, body)
+
+        imageFilename = name.split("/")[-1]
+        attachPhoto(name, imageFilename)
+        send()
