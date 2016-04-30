@@ -33,15 +33,18 @@ def createIF( components):
     cond["expression"] = components["expression"]
     
     if(cond["expression"] == "PostImageToFacebook"):
-        expression.append(cvTakePicture.PictureModule(30))
+        expression.append(cvTakePicture.PictureModule(30,True))
         expression.append(fbModule.FbModule())
     if(cond["expression"] == "PostImageToDropbox"):
-        expression.append(cvTakePicture.PictureModule(30))
+        expression.append(cvTakePicture.PictureModule(30,True))
         expression.append(DropboxModule.DropboxModule())
     if(cond["expression"] == "SendAnEmail"):
-        expression.append(cvTakePicture.PictureModule(30))
+        expression.append(cvTakePicture.PictureModule(30,True))
         expression.append(GmailModule.GmailModule("fbhackathon16@gmail.com","fbhackathon16@gmail.com","movefast"))
-
+    if(cond["expression"] == "LogToSheets"):
+        expression.append(cvTakePicture.PictureModule(10,False))
+        expression.append(SheetsModule.SheetsModule("https://docs.google.com/spreadsheets/d/1v30p35_yLDHV2Oefi0zvbUBqqbMZOD4or_4mrkge-EY/edit#gid=0"))        
+    
     return ifModule.IFModule(cvModule,cond,expression)
 
             

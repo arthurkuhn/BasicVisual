@@ -8,10 +8,11 @@ import time
 
 class PictureModule(object):
 
-    def __init__(self,timeout):
+    def __init__(self,timeout,savePic):
         self.time = datetime.datetime.now()
         self.timeout = timeout
         self.name = "Picture"
+        self.savePic = savePic
 
     def execute(self,image,name):
 
@@ -19,7 +20,8 @@ class PictureModule(object):
             dateText =  datetime.datetime.now().strftime("%d_%B_%Y_%I_%M_%S%p")
             picName = "../photos/" + dateText + ".jpg" 
             print picName
-            cv2.imwrite(picName, image)
+            if(self.savePic):
+                cv2.imwrite(picName, image)
             self.time = datetime.datetime.now() + datetime.timedelta(0,self.timeout)
             return picName
 
