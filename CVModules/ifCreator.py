@@ -15,7 +15,7 @@ import GmailModule
 import DropboxModule
 import SheetsModule
 import IFTextModule
-import YoModule
+import TwitterModule
 
 
 def createIF( components):
@@ -52,9 +52,9 @@ def createIF( components):
     if(cond["expression"] == "SendText"):
         expression.append(cvTakePicture.PictureModule(timeInterval,False))
         expression.append(IFTextModule.TextModule())
-    if(cond["expression"] == "SendYo"):
+    if(cond["expression"] == "SendTweet"):
         expression.append(cvTakePicture.PictureModule(timeInterval,False))
-        expression.append(YoModule.YoModule())
+        expression.append(TwitterModule.TwitterModule())
     return ifModule.IFModule(cvModule,cond,expression)
 
             

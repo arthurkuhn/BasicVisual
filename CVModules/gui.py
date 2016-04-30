@@ -5,7 +5,7 @@ Created on Apr 30, 2016
 
 '''
 import cv2
-#import numpy as np
+# import numpy as np
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QCoreApplication
 from Tix import Grid
@@ -16,7 +16,7 @@ import ifModule
 from BasicVisual.CVModules import ifCreator
 
 class Capture():
-    def __init__(self, ):
+    def __init__(self,):
         self.capturing = False
         self.c = cv2.VideoCapture(0)
 
@@ -34,8 +34,8 @@ class Capture():
                 components["eq"] = action.getEquality()
             else:
                 components["comp"] = "="
-                components["eq"] = action.getBooleanSelect().replace(" ","")
-            components["expression"] = action.getThenCondition().replace(" ","")
+                components["eq"] = action.getBooleanSelect().replace(" ", "")
+            components["expression"] = action.getThenCondition().replace(" ", "")
             components["time"] = action.getTimeInterval()
             print components
             
@@ -53,7 +53,7 @@ class Capture():
         
         run.execute(ifModules)
         
-        #run.execute()
+        # run.execute()
         
 
     def endCapture(self):
@@ -78,10 +78,10 @@ class Window(QWidget):
         self.capture.startCapture(self.actionList)
     
     def initUI(self):
-        #Possible options
-        self.possibleAlgos = ["Face Detect", "Body Detect", "Motion Detect"]
-        self.possibleIfs = [["There Is A Face","Number Of Faces"],["There Is A Body","Number Of Bodies"],["There Is Motion"]]
-        self.possibleThen = ["Post Image To Facebook","Post Image To Dropbox","Send An Email","Log To Sheets","Send Text", "Send Yo"]
+        # Possible options
+        self.possibleAlgos = ["Face Detect", "Body Detect", "Motion Detect", "Object Detect"]
+        self.possibleIfs = [["There Is A Face", "Number Of Faces"], ["There Is A Body", "Number Of Bodies"], ["There Is Motion"]]
+        self.possibleThen = ["Post Image To Facebook", "Post Image To Dropbox", "Send An Email", "Log To Sheets", "Send Text", "Send Tweet"]
         
         
         self.listWidget = QListWidget()
@@ -100,7 +100,7 @@ class Window(QWidget):
         
         self.currActionsLabel = QLabel('Current Actions:')
         
-        #List With the possible algorithms
+        # List With the possible algorithms
         self.conditions = QComboBox(self) 
         self.conditions.addItems(self.possibleAlgos)
         
@@ -130,30 +130,48 @@ class Window(QWidget):
         listQVBox.addLayout(videoActionButtons)
 
         self.setLayout(listQVBox)
-        self.setGeometry(300,300,300,300)
+        self.setGeometry(400, 400, 400, 400)
         self.setWindowTitle('Facebook Sydney Hackathon')
+        self.center()
         self.show()
         
     def deleteCondition(self):
-        listItems=self.listWidget.selectedItems()
+        listItems = self.listWidget.selectedItems()
         if not listItems: return        
         for item in listItems:
             self.listWidget.takeItem(self.listWidget.row(item))
-            del self.actionList[self.listWidget.row(item)-1]
+            del self.actionList[self.listWidget.row(item) - 1]
     
     def conditionChosen(self):
-        #Get the number of the chosen algo (to retrieve the choices)
+        # Get the number of the chosen algo (to retrieve the choices)
         chosen_algo = self.possibleAlgos.index(self.conditions.currentText())
-        myQCustomQWidget = QCustomDropDownWidget(self)
-        myQCustomQWidget.setAlgo(self.possibleAlgos[chosen_algo])
-        myQCustomQWidget.setIfConditions(self.possibleIfs[chosen_algo])
-        myQCustomQWidget.setThenConditions(self.possibleThen)
-        self.actionList.append(myQCustomQWidget)
-        myQListWidgetItem = QListWidgetItem(self.listWidget)
-        myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
-        self.listWidget.addItem(myQListWidgetItem)
-        self.listWidget.setItemWidget(myQListWidgetItem, myQCustomQWidget)
+        if "Object" not in self.conditions.currentText():     
+            myQCustomQWidget = QCustomDropDownWidget(self)
+            myQCustomQWidget.setAlgo(self.possibleAlgos[chosen_algo])
+            myQCustomQWidget.setIfConditions(self.possibleIfs[chosen_algo])
+            myQCustomQWidget.setThenConditions(self.possibleThen)
+            self.actionList.append(myQCustomQWidget)
+            myQListWidgetItem = QListWidgetItem(self.listWidget)
+            myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
+            self.listWidget.addItem(myQListWidgetItem)
+            self.listWidget.setItemWidget(myQListWidgetItem, myQCustomQWidget)
+        else:
+            myQCustomQWidget = QCustomObjectWidget(self)
+            myQCustomQWidget.setAlgo(self.possibleAlgos[chosen_algo])
+            myQCustomQWidget.setThenConditions(self.possibleThen)
+            self.actionList.append(myQCustomQWidget)
+            myQListWidgetItem = QListWidgetItem(self.listWidget)
+            myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
+            self.listWidget.addItem(myQListWidgetItem)
+            self.listWidget.setItemWidget(myQListWidgetItem, myQCustomQWidget)
     
+    def center(self):
+        frameGm = self.frameGeometry()
+        screen = QApplication.desktop().screenNumber(QApplication.desktop().cursor().pos())
+        centerPoint = QApplication.desktop().screenGeometry(screen).center()
+        frameGm.moveCenter(centerPoint)
+        self.move(frameGm.topLeft())
+            
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
