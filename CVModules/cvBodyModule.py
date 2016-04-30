@@ -16,7 +16,7 @@ class BodyModule(object):
         self.toPrint = True
         self.currentFrame = None
 
-    def run(self,image):
+    def run(self,image,condition):
 
         #ret,image = self.cap.read()
         #image = imutils.resize(image, width=min(400, image.shape[1]))
@@ -55,4 +55,42 @@ class BodyModule(object):
         #cv2.imshow("Output", image)
         self.currentFrame = image
 
-        return (True,pick)
+        return (self.testCondition(condition),pick)
+
+    def testCondition(self,condition):
+        variable = condition["var"]
+        comparison = condition["comp"]
+        equality = condition["eq"]
+
+        result = False
+        if(variable == "NumberOfBodies"):
+            if comparison == "=":
+                if(self.numBodies == int(equality)):
+                    result = True
+            elif comparison == ">":
+                if(self.numBodies > int(equality)):
+                    result = True
+            elif comparison == ">=":
+                if(self.numBodies >= int(equality)):
+                    result = True
+            elif comparison == "<":
+                if(self.numBodies < int(equality)):
+                    result = True
+            elif comparison == "<=":
+                if(self.numBodies <= int(equality)):
+                    result = True
+            elif comparison == "!=":
+                if(self.numBodies != int(equality)):
+                    result = True
+        elif (variable == "ThereIsAFace"):
+            eqFlag = False
+            if(equality == "True"):
+                eqFlag = True
+
+            if comparison == "=":
+                if(self.isBody == eqFlag):
+                    result = True
+            elif comparison == "!=":
+                if(self.isBody != eqFlag):
+                    result = True
+        return result

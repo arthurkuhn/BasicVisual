@@ -17,8 +17,7 @@ class FaceModule(object):
         self.toPrint = True
         self.currentFrame = None
 
-    def run(self, image):
-
+    def run(self, image,condition):
 
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -35,7 +34,7 @@ class FaceModule(object):
         else:
             self.isFace = False
 
-        numFace = len(faces)
+        self.numFaces = len(faces)
 
         #if(self.toPrint):
         #    for (x, y, w, h) in faces:
@@ -46,4 +45,43 @@ class FaceModule(object):
         #cv2.imshow("Output", image)
         self.currentFrame = image
 
-        return (True, faces)
+        return (self.testCondition(condition), faces)
+
+    def testCondition(self,condition):
+        variable = condition["var"]
+        comparison = condition["comp"]
+        equality = condition["eq"]
+
+        result = False
+        if(variable == "NumberOfFaces"):
+            if comparison == "=":
+
+                if(self.numFaces == int(equality)):
+                    result = True
+            elif comparison == ">":
+                if(self.numFaces > int(equality)):
+                    result = True
+            elif comparison == ">=":
+                if(self.numFaces >= int(equality)):
+                    result = True
+            elif comparison == "<":
+                if(self.numFaces < int(equality)):
+                    result = True
+            elif comparison == "<=":
+                if(self.numFaces <= int(equality)):
+                    result = True
+            elif comparison == "!=":
+                if(self.numFaces != int(equality)):
+                    result = True
+        elif (variable == "ThereIsAFace"):
+            eqFlag = False
+            if(equality == "True"):
+                eqFlag = True
+
+            if comparison == "=":
+                if(self.isFace == eqFlag):
+                    result = True
+            elif comparison == "!=":
+                if(self.isFace != eqFlag):
+                    result = True
+        return result
