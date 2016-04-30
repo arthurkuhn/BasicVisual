@@ -4,7 +4,9 @@ Created on Apr 30, 2016
 @author: Arthur
 '''
 from PyQt5.QtWidgets import *
-from PyQt5 import *
+from PyQt5.Qt import *
+from PyQt5.QtCore import *
+from Tkconstants import HORIZONTAL
 
 class QCustomDropDownWidget (QWidget):
     def __init__ (self, parent = None):
@@ -16,6 +18,7 @@ class QCustomDropDownWidget (QWidget):
         self.textQVBoxLayout = QVBoxLayout()
         self.ifQHBoxLayout = QHBoxLayout()
         self.thenQHBoxLayout = QHBoxLayout()
+        self.timeQHBoxLayout = QHBoxLayout()
         
         self.algoQLabel = QLabel()
         
@@ -37,6 +40,11 @@ class QCustomDropDownWidget (QWidget):
         self.thenTextQLabel = QLabel('Then ', self)
         self.thenTextQComboBox    = QComboBox(self)
         
+        self.timeLimitQLabel = QLabel('Time Interval (in seconds): ', self)
+        self.timeLimitQComboBox = QComboBox(self)
+        self.timeLimitQComboBox.addItems(["5","10","15","20","25","25","30","50","60","90","120"])
+        self.timeQHBoxLayout.addWidget(self.timeLimitQLabel)
+        self.timeQHBoxLayout.addWidget(self.timeLimitQComboBox)
         
         self.ifQHBoxLayout.addWidget(self.ifTextQLabel)
         self.ifQHBoxLayout.addWidget(self.ifTextQComboBox)
@@ -49,6 +57,8 @@ class QCustomDropDownWidget (QWidget):
         self.textQVBoxLayout.addWidget(self.algoQLabel)
         self.textQVBoxLayout.addLayout(self.ifQHBoxLayout,0)
         self.textQVBoxLayout.addLayout(self.thenQHBoxLayout,1)
+        self.textQVBoxLayout.addLayout(self.timeQHBoxLayout,2)
+        
         self.allQHBoxLayout  = QHBoxLayout()
         self.iconQLabel      = QLabel()
         self.allQHBoxLayout.addWidget(self.iconQLabel, 0)
@@ -102,4 +112,6 @@ class QCustomDropDownWidget (QWidget):
         return self.relationQCombomBox.currentText()
     def getEquality(self):
         return int(self.intEntryField.text())
+    def getTimeInterval(self):
+        return int(self.timeLimitQComboBox.currentText())
         
