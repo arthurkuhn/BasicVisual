@@ -18,7 +18,7 @@ class PictureModule(object):
 
         if(datetime.datetime.now() > self.time):
             dateText =  datetime.datetime.now().strftime("%d_%B_%Y_%I_%M_%S%p")
-            picName = "../photos/" + dateText + ".jpg" 
+            picName = "../photos/" + dateText + ".jpg"
             print picName
             if(self.savePic):
                 cv2.imwrite(picName, image)
