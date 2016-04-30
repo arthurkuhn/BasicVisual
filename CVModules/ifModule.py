@@ -6,6 +6,7 @@ from imutils import paths
 import cvBodyModule
 import cvFaceModule
 import cvMotionModule
+import cvTakePicture
 
 class IFModule(object):
     def __init__(self, cvMod,cond,expr):
@@ -17,7 +18,6 @@ class IFModule(object):
         result, drawList = self.cvModule.run(frame,self.condition)
         return (result,drawList)
 
-    def executeExpressions(self):
-        print True
+    def executeExpressions(self,frame):
         for exp in self.expressions:
-            print exp
+            exp.execute(frame)
