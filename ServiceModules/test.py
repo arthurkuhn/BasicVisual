@@ -1,7 +1,5 @@
-import FbModule
 import GmailModule
 import SheetsModule
-import DropboxModule
 
 def runFbModule():
     f = FbModule.FbModule()
@@ -27,14 +25,10 @@ def runGmailModule():
     g.sendEmail()
 
 def runSheetsModule():
-    jsonFile = "../../BasicVisual-e88fe6c9fb47.json"
-    scope = ['https://spreadsheets.google.com/feeds']
     url = "https://docs.google.com/spreadsheets/d/1v30p35_yLDHV2Oefi0zvbUBqqbMZOD4or_4mrkge-EY/edit#gid=0"
 
     s = SheetsModule.SheetsModule(jsonFile, scope, url)
     s.updateCurrentRow("4th April 16", "8:09pm", "5 faces")
-    s.updateCurrentRow("4th April 16", "8:10pm", "5 faces")
-    s.updateCurrentRow("4th April 16", "8:10pm", "5 faces")
 
 def runDropbox():
     accessToken = "BqdBFIVK9UAAAAAAAAAADXXX_FSPz_UTqzc-V870k403PoO1Lrr2reIfeBkJ16_a"
@@ -45,4 +39,4 @@ def runDropbox():
     d.uploadPhoto(photoPath, dropboxPath)
 
 
-runDropbox()
+runGmailModule()
