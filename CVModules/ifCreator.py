@@ -14,6 +14,8 @@ import fbModule
 import GmailModule
 import DropboxModule
 import SheetsModule
+import IFTextModule
+
 
 def createIF( components):
     cvModule = None
@@ -32,18 +34,23 @@ def createIF( components):
     cond["eq"] = components["eq"]
     cond["expression"] = components["expression"]
     
+    timeInterval = components["time"]
+    
     if(cond["expression"] == "PostImageToFacebook"):
-        expression.append(cvTakePicture.PictureModule(30,True))
+        expression.append(cvTakePicture.PictureModule(timeInterval,True))
         expression.append(fbModule.FbModule())
     if(cond["expression"] == "PostImageToDropbox"):
-        expression.append(cvTakePicture.PictureModule(30,True))
+        expression.append(cvTakePicture.PictureModule(timeInterval,True))
         expression.append(DropboxModule.DropboxModule())
     if(cond["expression"] == "SendAnEmail"):
-        expression.append(cvTakePicture.PictureModule(30,True))
+        expression.append(cvTakePicture.PictureModule(timeInterval,True))
         expression.append(GmailModule.GmailModule("fbhackathon16@gmail.com","fbhackathon16@gmail.com","movefast"))
     if(cond["expression"] == "LogToSheets"):
-        expression.append(cvTakePicture.PictureModule(10,False))
+        expression.append(cvTakePicture.PictureModule(timeInterval,False))
         expression.append(SheetsModule.SheetsModule("https://docs.google.com/spreadsheets/d/1v30p35_yLDHV2Oefi0zvbUBqqbMZOD4or_4mrkge-EY/edit#gid=0"))        
+    if(cond["expression"] == "SendText"):
+        expression.append(cvTakePicture.PictureModule(timeInterval,False))
+        expression.append(IFTextModule.TextModule())
     
     return ifModule.IFModule(cvModule,cond,expression)
 

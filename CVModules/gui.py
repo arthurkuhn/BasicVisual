@@ -36,6 +36,7 @@ class Capture():
                 components["comp"] = "="
                 components["eq"] = action.getBooleanSelect().replace(" ","")
             components["expression"] = action.getThenCondition().replace(" ","")
+            components["time"] = action.getTimeInterval()
             print components
             
             ifModules.append(ifCreator.createIF(components))
@@ -80,7 +81,7 @@ class Window(QWidget):
         #Possible options
         self.possibleAlgos = ["Face Detect", "Body Detect", "Motion Detect"]
         self.possibleIfs = [["There Is A Face","Number Of Faces"],["There Is A Body","Number Of Bodies"],["There Is Motion"]]
-        self.possibleThen = ["Post Image To Facebook","Post Image To Dropbox","Send An Email","Log To Sheets"]
+        self.possibleThen = ["Post Image To Facebook","Post Image To Dropbox","Send An Email","Log To Sheets","Send Text"]
         
         
         self.listWidget = QListWidget()
