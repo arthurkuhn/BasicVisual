@@ -46,6 +46,13 @@ class Window(QWidget):
         self.initUI()
     
     def initUI(self):
+        #Possible options
+        self.possibleAlgos = ["Recognize faces", "Recognize bodies"]
+        self.possibleIfs = [["num faces","is face"],["num bodies","is body"]]
+        self.possibleEquals = ["1","2","3"]
+        self.possibleThen = ["Send to FB","Sent to Google Drive"]
+        
+        
         self.capture = Capture()
         
         self.start_button = QPushButton('Start', self)
@@ -59,50 +66,42 @@ class Window(QWidget):
         
         self.currActionsLabel = QLabel('Current Actions:')
         
-        conditions = QComboBox(self)
-        items = ["Recognize faces", "Recognize bodies"]
-        conditions.addItems(items)
-        conditions.activated[str].connect(self.conditionChosen)
-        
-        services = QComboBox(self)
-        available = ["Post the picture to facebook", "Save the picture", "Send text"]
-        services.addItems(available)
-        services.activated[str].connect(self.serviceChosen)
+        self.conditions = QComboBox(self) 
+        self.conditions.addItems(self.possibleAlgos)
+        #self.conditions.activated[str].connect(self.conditionChosen)
         
         self.listWidget = QListWidget()
 
         self.addAction_button = QPushButton('Add an action', self)
-        #self.add.connect(self.capture.quitCapture)
+        self.addAction_button.clicked.connect(self.conditionChosen)
         
         
         grid = QGridLayout()
         grid.addWidget(self.currActionsLabel)
         grid.addWidget(self.listWidget)
-        grid.addWidget(conditions)
-        grid.addWidget(services)
+        grid.addWidget(self.conditions)
         grid.addWidget(self.addAction_button)
         grid.addWidget(self.start_button)
         grid.addWidget(self.end_button)
         grid.addWidget(self.quit_button)
 
         self.setLayout(grid)
-        self.setGeometry(200,200,200,200)
+        self.setGeometry(300,300,300,300)
         self.setWindowTitle('Facebook Sydney Hackathon')
         self.show()
         
-    def conditionChosen(self,text):
+    def conditionChosen(self):
+        #Get the number of the chosen algo (to retrieve the choices)
+        chosen_algo = self.possibleAlgos.index(self.conditions.currentText())
         myQCustomQWidget = QCustomQWidget(self)
-        myQCustomQWidget.setTextUp(text)
-        myQCustomQWidget.setTextDown('test')
+        myQCustomQWidget.setIfConditions(self.possibleIfs[chosen_algo])
+        myQCustomQWidget.setEqualConditions(self.possibleEquals)
+        myQCustomQWidget.setThenConditions(self.possibleThen)
         myQListWidgetItem = QListWidgetItem(self.listWidget)
         myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
         self.listWidget.addItem(myQListWidgetItem)
         self.listWidget.setItemWidget(myQListWidgetItem, myQCustomQWidget)
     
-    def serviceChosen(self,text):
-        if(text == 'Save the picture'):
-            print 'save them'
- 
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
