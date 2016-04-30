@@ -38,7 +38,10 @@ def createIF( components):
     if(cond["expression"] == "PostImageToDropbox"):
         expression.append(cvTakePicture.PictureModule(30))
         expression.append(DropboxModule.DropboxModule())
-    
+    if(cond["expression"] == "SendAnEmail"):
+        expression.append(cvTakePicture.PictureModule(30))
+        expression.append(GmailModule.GmailModule("fbhackathon16@gmail.com","fbhackathon16@gmail.com","movefast"))
+
     return ifModule.IFModule(cvModule,cond,expression)
 
             
