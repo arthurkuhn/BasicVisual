@@ -11,9 +11,6 @@ class CVController(object):
     def __init__(self):
         self.cap = cv2.VideoCapture(0)
 
-    def test(self):
-        print 'Im in parent class'
-
 if __name__ == '__main__':
 
     y = CVController()
