@@ -14,10 +14,8 @@ from QCustomWidget import *
 import run
 import ifModule
 from BasicVisual.CVModules import ifCreator
-import os.path as osp
+from os import *
 import sys
-
-path = osp.join(osp.dirname(sys.modules[__name__].__file__), 'application-icon.png')
 
 class Capture():
     def __init__(self,):
@@ -98,7 +96,6 @@ class Window(QWidget):
         self.possibleIfs = [["There Is A Face", "Number Of Faces"], ["There Is A Body", "Number Of Bodies"], ["There Is Motion"]]
         self.possibleThen = ["Post Image To Facebook", "Post Image To Dropbox", "Send An Email", "Log To Sheets", "Send Text", "Send Tweet","Upload And Log"]
         
-        
         self.listWidget = QListWidget()
         self.actionList = []
         
@@ -106,9 +103,11 @@ class Window(QWidget):
         
         self.start_button = QPushButton('Start', self)
         self.start_button.clicked.connect(self.run)
+        self.start_button.setStyleSheet("background-color: rgb(92,184,92)")
     
         self.quit_button = QPushButton('Quit', self)
         self.quit_button.clicked.connect(self.capture.quitCapture)
+        self.quit_button.setStyleSheet("background-color: rgb(217,83,79)")
         
         self.currActionsLabel = QLabel('Current Actions:')
         
@@ -124,8 +123,20 @@ class Window(QWidget):
         self.removeAction_button = QPushButton('Delete selected', self)
         self.removeAction_button.clicked.connect(self.deleteCondition)
         
+        label = QLabel()
+        pixmap = QPixmap("C:\Users\Arthur\Documents\Hackathon\workspace\hackathon2.7\BasicVisual\CVModules\logo")
+        label.setPixmap(pixmap)
+        
+        companyName = QLabel('Basic Visual', self)
+        companyName.setStyleSheet('font-weight: bold; font-size: 18pt; font-family: Courier;')
+        compLayout = QHBoxLayout()
+        compLayout.addWidget(label)
+        compLayout.addWidget(companyName)
+        compLayout.addStretch()
+
         
         listQVBox = QVBoxLayout()
+        listQVBox.addLayout(compLayout)
         listQVBox.addWidget(self.currActionsLabel)
         listQVBox.addWidget(self.listWidget)
         listQVBox.addWidget(self.conditions)
@@ -185,6 +196,5 @@ class Window(QWidget):
             
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon(path))
     window = Window()
     sys.exit(app.exec_())
