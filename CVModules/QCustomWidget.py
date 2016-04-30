@@ -65,10 +65,12 @@ class QCustomObjectWidget(QWidget):
         self.algoQLabel.setText(string)
     def setThenConditions (self, list_of_strings):
         self.thenTextQComboBox.addItems(list_of_strings)
-    def getTag(self):
+    def getTags(self):
         return self.tagEntryField.text()
     def getTimeInterval(self):
         return int(self.timeLimitQComboBox.currentText())
+    def getIfCondition(self):
+        return ""
         
         
         

@@ -16,6 +16,7 @@ import DropboxModule
 import SheetsModule
 import IFTextModule
 import TwitterModule
+import DropboxSheetsModule
 
 
 def createIF( components):
@@ -55,6 +56,9 @@ def createIF( components):
     if(cond["expression"] == "SendTweet"):
         expression.append(cvTakePicture.PictureModule(timeInterval,False))
         expression.append(TwitterModule.TwitterModule())
+    if(cond["expression"] == "UploadAndLog"):
+        expression.append(cvTakePicture.PictureModule(timeInterval,True))
+        expression.append(DropboxSheetsModule.DropboxSheetsModule("https://docs.google.com/spreadsheets/d/1v30p35_yLDHV2Oefi0zvbUBqqbMZOD4or_4mrkge-EY/edit#gid=0"))
     return ifModule.IFModule(cvModule,cond,expression)
 
             

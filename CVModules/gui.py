@@ -29,7 +29,11 @@ class Capture():
             components["module"] = action.getAlgo().replace(" ", "")
             ifCondition = action.getIfCondition().replace(" ", "")
             components["var"] = ifCondition
-            if 'Is' not in ifCondition:
+            
+            if ifCondition == "":
+                components["comp"] = ""
+                components["eq"] = action.getTags()
+            elif 'Is' not in ifCondition:
                 components["comp"] = action.getComparisonOperator().replace(" ", "")
                 components["eq"] = action.getEquality()
             else:
@@ -81,7 +85,7 @@ class Window(QWidget):
         # Possible options
         self.possibleAlgos = ["Face Detect", "Body Detect", "Motion Detect", "Object Detect"]
         self.possibleIfs = [["There Is A Face", "Number Of Faces"], ["There Is A Body", "Number Of Bodies"], ["There Is Motion"]]
-        self.possibleThen = ["Post Image To Facebook", "Post Image To Dropbox", "Send An Email", "Log To Sheets", "Send Text", "Send Tweet"]
+        self.possibleThen = ["Post Image To Facebook", "Post Image To Dropbox", "Send An Email", "Log To Sheets", "Send Text", "Send Tweet","Upload And Log"]
         
         
         self.listWidget = QListWidget()
