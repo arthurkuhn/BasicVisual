@@ -25,6 +25,9 @@ class Capture():
         ifModules = []
         
         for action in actionList:
+            if action is None:
+                continue
+            
             components = {}
             components["module"] = action.getAlgo().replace(" ", "")
             ifCondition = action.getIfCondition().replace(" ", "")
@@ -144,7 +147,7 @@ class Window(QWidget):
         if not listItems: return        
         for item in listItems:
             self.listWidget.takeItem(self.listWidget.row(item))
-            del self.actionList[self.listWidget.row(item) - 1]
+            del self.actionList[self.listWidget.row(item)-1]
     
     def conditionChosen(self):
         # Get the number of the chosen algo (to retrieve the choices)

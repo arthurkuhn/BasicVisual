@@ -24,7 +24,7 @@ class ObjectModule(object):
         self.currentFrame = image
         picName = "../photos/objDetectTemp.jpg"
         cv2.imwrite(picName, image)
-        return (self.testCondition(condition,image,pictureName), [])
+        return (self.testCondition(condition,image,picName), [])
 
 
     def objectDetect(self,photo_file):
@@ -47,12 +47,15 @@ class ObjectModule(object):
                 }]
             })
             response = service_request.execute()
-
+            print response
             tags = []
-            tags.append(response['responses'][0]['labelAnnotations'][0]['description'])
-            tags.append(response['responses'][1]['labelAnnotations'][0]['description'])
-            tags.append(response['responses'][2]['labelAnnotations'][0]['description'])
-            tags.append(response['responses'][3]['labelAnnotations'][0]['description'])
+            r = response['responses'][0]['labelAnnotations']
+            for element in r:
+                tags.append(element['description'])
+            """tags.append(response['responses'][0]['labelAnnotations'][0]['description'])
+            tags.append(response['responses'][0]['labelAnnotations'][1]['description'])
+            tags.append(response['responses'][0]['labelAnnotations'][2]['description'])
+            tags.append(response['responses'][0]['labelAnnotations'][3]['description'])"""
             return tags
 
 
@@ -61,9 +64,10 @@ class ObjectModule(object):
         comparison = condition["comp"]
         equality = condition["eq"]
 
-        tags = objectDetect(pictureName)
+        tags = self.objectDetect(pictureName)
         compTags = equality.split(',')
 
+        
         for ct in compTags:
             for t in tags:
                 if t == ct:

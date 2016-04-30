@@ -17,6 +17,7 @@ import SheetsModule
 import IFTextModule
 import TwitterModule
 import DropboxSheetsModule
+import cvObjectDetectModule
 
 
 def createIF( components):
@@ -30,6 +31,8 @@ def createIF( components):
         cvModule = cvBodyModule.BodyModule()
     elif(components["module"] == "MotionDetect"):
         cvModule = cvMotionModule.MotionModule()
+    elif(components["module"] == "ObjectDetect"):
+        cvModule = cvObjectDetectModule.ObjectModule()
     
     cond["var"] = components["var"]
     cond["comp"] = components["comp"]

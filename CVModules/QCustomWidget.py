@@ -63,6 +63,8 @@ class QCustomObjectWidget(QWidget):
         
     def setAlgo (self, string):
         self.algoQLabel.setText(string)
+    def getAlgo(self):
+        return self.algoQLabel.text()
     def setThenConditions (self, list_of_strings):
         self.thenTextQComboBox.addItems(list_of_strings)
     def getTags(self):
@@ -71,6 +73,8 @@ class QCustomObjectWidget(QWidget):
         return int(self.timeLimitQComboBox.currentText())
     def getIfCondition(self):
         return ""
+    def getThenCondition(self):
+        return self.thenTextQComboBox.currentText()
         
         
         
