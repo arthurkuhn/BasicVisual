@@ -13,8 +13,6 @@ class QCustomDropDownWidget (QWidget):
         
     def initUI(self):
         
-        self.equalPart = QCustomEqualField(self)
-        
         self.textQVBoxLayout = QVBoxLayout()
         self.ifQHBoxLayout = QHBoxLayout()
         self.thenQHBoxLayout = QHBoxLayout()
@@ -23,8 +21,17 @@ class QCustomDropDownWidget (QWidget):
         
         self.ifTextQLabel = QLabel('If',self)
         self.ifTextQComboBox    = QComboBox(self)
-        self.ifTextQComboBox.activated[str].connect(self.equalPart.refresh)
         self.ifTextQComboBox.activated[str].connect(self.refresh)
+        
+        
+        self.intEntryField = QLineEdit()
+        
+        self.relationQCombomBox = QComboBox()
+        self.relationQCombomBox.addItems([" > ", " >= ", " = ", " <= ", " < "])
+        
+        self.select = QComboBox()
+        self.select.addItems(["true","false"])
+        self.equalQLabel = QLabel(' = ', self)
         
         
         self.thenTextQLabel = QLabel('Then ', self)
@@ -33,8 +40,8 @@ class QCustomDropDownWidget (QWidget):
         
         self.ifQHBoxLayout.addWidget(self.ifTextQLabel)
         self.ifQHBoxLayout.addWidget(self.ifTextQComboBox)
-        self.ifQHBoxLayout.addSpacing(2)
-        self.ifQHBoxLayout.addLayout(self.equalPart)
+        self.ifQHBoxLayout.addWidget(self.equalQLabel)
+        self.ifQHBoxLayout.addWidget(self.select)
         
         self.thenQHBoxLayout.addWidget(self.thenTextQLabel)
         self.thenQHBoxLayout.addWidget(self.thenTextQComboBox)
@@ -51,9 +58,6 @@ class QCustomDropDownWidget (QWidget):
         self.ifTextQComboBox.setStyleSheet('''
             color: rgb(0, 0, 255);
         ''')
-        self.equalPart.setStyleSheet('''
-            color: rgb(0, 0, 255);
-        ''')
         self.thenTextQComboBox.setStyleSheet('''
             color: rgb(255, 0, 0);
         ''')
@@ -63,45 +67,27 @@ class QCustomDropDownWidget (QWidget):
         self.ifTextQComboBox.addItems(list_of_strings)
     def setThenConditions (self, list_of_strings):
         self.thenTextQComboBox.addItems(list_of_strings)
-    def refresh(self):
+    def refresh(self,str):
+        if 'Num' in str:
+            print 'isNum'
+            self.relationQCombomBox = QComboBox()
+            self.relationQCombomBox.addItems([" > ", " >= ", " = ", " <= ", " < "])
+            self.intEntryField = QLineEdit()
+            obj1 = self.ifQHBoxLayout.replaceWidget(self.equalQLabel, self.relationQCombomBox)
+            obj2 = self.ifQHBoxLayout.replaceWidget(self.select, self.intEntryField)
+            obj1.widget().deleteLater()
+            obj2.widget().deleteLater()
+        elif 'is' in str:
+            print 'isNot'
+            self.select = QComboBox()
+            self.select.addItems(["true","false"])
+            self.equalQLabel = QLabel(' = ', self)
+            obj1 = self.ifQHBoxLayout.replaceWidget(self.relationQCombomBox,self.equalQLabel)
+            obj2 = self.ifQHBoxLayout.replaceWidget(self.intEntryField,self.select)
+            obj1.widget().deleteLater()
+            obj2.widget().deleteLater()
+        
         self.ifQHBoxLayout.update()
         self.thenQHBoxLayout.update()
         self.setLayout(self.allQHBoxLayout)
-        
-            
-        
-        
-class QCustomEqualField(QWidget):
-    def __init__ (self, parent = None):
-        super(QCustomEqualField, self).__init__(parent)
-        self.initUI()
-        
-    def initUI(self):
-        self.intEntryField = QLineEdit()
-        self.select = QComboBox()
-        self.select.addItems(["true","false"])
-        self.relationQCombomBox = QComboBox()
-        self.relationQCombomBox.addItems([" > ", " >= ", " = ", " <= ", " < "])
-        self.equalQLabel = QLabel(' = ', self)
-        self.currLayout = QHBoxLayout()
-        self.currLayout.addWidget(self.select)
-        self.setLayout(self.currLayout)
-        
-    def refresh(self, str):
-        if 'Num' in str:
-            print 'isNum'
-            self.currLayout.replaceWidget(self.equalQLabel, self.relationQCombomBox)
-            self.currLayout.replaceWidget(self.select, self.intEntryField)
-            self.currLayout.removeWidget(self.select)
-            self.currLayout.removeWidget(self.equalQLabel)
-        elif 'is' in str:
-            print 'isNot'
-            self.currLayout.replaceWidget(self.relationQCombomBox,self.equalQLabel)
-            self.currLayout.replaceWidget(self.intEntryField,self.select)
-            self.currLayout.removeWidget(self.relationQCombomBox)
-            self.currLayout.removeWidget(self.intEntryField)
-
-        
-        #self.currLayout.activate()
-        self.setLayout(self.currLayout)
         
