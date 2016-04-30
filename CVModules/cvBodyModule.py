@@ -7,8 +7,7 @@ import cvController
 
 class BodyModule(object):
 
-    def __init__(self,cap):
-        self.cap = cap
+    def __init__(self):
         self.isBody = False
         self.numBodies = 0
         self.hog = cv2.HOGDescriptor()

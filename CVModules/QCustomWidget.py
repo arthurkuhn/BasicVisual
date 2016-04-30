@@ -30,7 +30,7 @@ class QCustomDropDownWidget (QWidget):
         self.relationQCombomBox.addItems([" > ", " >= ", " = ", " <= ", " < "])
         
         self.select = QComboBox()
-        self.select.addItems(["true","false"])
+        self.select.addItems(["True","False"])
         self.equalQLabel = QLabel(' = ', self)
         
         
@@ -80,7 +80,7 @@ class QCustomDropDownWidget (QWidget):
         elif 'is' in str:
             print 'isNot'
             self.select = QComboBox()
-            self.select.addItems(["true","false"])
+            self.select.addItems(["True","False"])
             self.equalQLabel = QLabel(' = ', self)
             obj1 = self.ifQHBoxLayout.replaceWidget(self.relationQCombomBox,self.equalQLabel)
             obj2 = self.ifQHBoxLayout.replaceWidget(self.intEntryField,self.select)
@@ -90,4 +90,16 @@ class QCustomDropDownWidget (QWidget):
         self.ifQHBoxLayout.update()
         self.thenQHBoxLayout.update()
         self.setLayout(self.allQHBoxLayout)
+    def getAlgo(self):
+        return self.algoQLabel.text()
+    def getIfCondition(self):
+        return self.ifTextQComboBox.currentText()
+    def getThenCondition(self):
+        return self.thenTextQComboBox.currentText()
+    def getBooleanSelect(self):
+        return self.select.currentText()
+    def getComparisonOperator(self):
+        return self.relationQCombomBox.currentText()
+    def getEquality(self):
+        return int(self.intEntryField.text())
         

@@ -7,9 +7,8 @@ import cvController
 
 class FaceModule(object):
 
-    def __init__(self,cap):
+    def __init__(self):
         #cvController.CVController.__init__(self)
-        self.cap = cap
         self.isFace = False
         self.numFaces = 0
         self.faceCasc = "../cascades/haarcascade_frontalface_default.xml"

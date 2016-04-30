@@ -17,15 +17,15 @@ def drawResult(image,parts,color):
 
     return image
 
-if __name__ == '__main__':
+def execute(ifStatements):
 
     cvControl = cvController.CVController()
-    cvFace = cvFaceModule.FaceModule(cvControl.cap)
-    cvBody = cvBodyModule.BodyModule(cvControl.cap)
-    cvMotion = cvMotionModule.MotionModule(cvControl.cap)
-    cvPicture = cvTakePicture.PictureModule(30)
+    cvFace = cvFaceModule.FaceModule()
+    cvBody = cvBodyModule.BodyModule()
+    cvMotion = cvMotionModule.MotionModule()
+    #cvPicture = cvTakePicture.PictureModule()
 
-    ifStatements = [ifModule.IFModule(cvFace,{"var":"NumberOfFaces", "comp":"=","eq":"1"},[cvPicture])]
+    #ifStatements = [ifModule.IFModule(cvFace,{"var":"ThereIsAFace", "comp":"=","eq":"True"},"")]
 
     while(True):
         ret,image = cvControl.cap.read()
@@ -41,5 +41,5 @@ if __name__ == '__main__':
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
-    self.cap.release()
+    cvControl.cap.release()
     cv2.destroyAllWindows()
