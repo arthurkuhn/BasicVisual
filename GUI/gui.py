@@ -6,9 +6,11 @@ Created on Apr 30, 2016
 '''
 import cv2
 #import numpy as np
-from PyQt5.QtWidgets import QWidget, QPushButton, QApplication, QVBoxLayout
+from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QCoreApplication
-
+from Tix import Grid
+from PyQt5.Qt import QLabel
+from QCustomWidget import *
 
 class Capture():
     def __init__(self):
@@ -37,13 +39,15 @@ class Capture():
         cap.release()
         QCoreApplication.quit()
         
-        
+    
 class Window(QWidget):
     def __init__(self):
-        
         QWidget.__init__(self)
-        
+        self.initUI()
+    
+    def initUI(self):
         self.capture = Capture()
+        
         self.start_button = QPushButton('Start', self)
         self.start_button.clicked.connect(self.capture.startCapture)
     
@@ -53,15 +57,52 @@ class Window(QWidget):
         self.quit_button = QPushButton('Quit', self)
         self.quit_button.clicked.connect(self.capture.quitCapture)
         
-        vbox = QVBoxLayout()
-        vbox.addWidget(self.start_button)
-        vbox.addWidget(self.end_button)
-        vbox.addWidget(self.quit_button)
+        self.currActionsLabel = QLabel('Current Actions:')
+        
+        conditions = QComboBox(self)
+        items = ["Recognize faces", "Recognize bodies"]
+        conditions.addItems(items)
+        conditions.activated[str].connect(self.conditionChosen)
+        
+        services = QComboBox(self)
+        available = ["Post the picture to facebook", "Save the picture", "Send text"]
+        services.addItems(available)
+        services.activated[str].connect(self.serviceChosen)
+        
+        self.listWidget = QListWidget()
 
-        self.setLayout(vbox)
-        self.setGeometry(100,100,200,200)
+        self.addAction_button = QPushButton('Add an action', self)
+        #self.add.connect(self.capture.quitCapture)
+        
+        
+        grid = QGridLayout()
+        grid.addWidget(self.currActionsLabel)
+        grid.addWidget(self.listWidget)
+        grid.addWidget(conditions)
+        grid.addWidget(services)
+        grid.addWidget(self.addAction_button)
+        grid.addWidget(self.start_button)
+        grid.addWidget(self.end_button)
+        grid.addWidget(self.quit_button)
+
+        self.setLayout(grid)
+        self.setGeometry(200,200,200,200)
+        self.setWindowTitle('Facebook Sydney Hackathon')
         self.show()
+        
+    def conditionChosen(self,text):
+        myQCustomQWidget = QCustomQWidget(self)
+        myQCustomQWidget.setTextUp(text)
+        myQCustomQWidget.setTextDown('test')
+        myQListWidgetItem = QListWidgetItem(self.listWidget)
+        myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
+        self.listWidget.addItem(myQListWidgetItem)
+        self.listWidget.setItemWidget(myQListWidgetItem, myQCustomQWidget)
     
+    def serviceChosen(self,text):
+        if(text == 'Save the picture'):
+            print 'save them'
+ 
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
