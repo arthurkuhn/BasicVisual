@@ -19,5 +19,10 @@ class IFModule(object):
         return (result,drawList)
 
     def executeExpressions(self,frame):
+        picture = ""
         for exp in self.expressions:
-            exp.execute(frame)
+            result = exp.execute(frame,picture)
+            if(result == ""):
+                break
+            if(exp.name == "Picture"):
+                picture = result

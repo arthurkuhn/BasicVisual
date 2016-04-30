@@ -23,9 +23,9 @@ if __name__ == '__main__':
     cvFace = cvFaceModule.FaceModule(cvControl.cap)
     cvBody = cvBodyModule.BodyModule(cvControl.cap)
     cvMotion = cvMotionModule.MotionModule(cvControl.cap)
-    #cvPicture = cvTakePicture.PictureModule()
+    cvPicture = cvTakePicture.PictureModule(30)
 
-    ifStatements = [ifModule.IFModule(cvMotion,{"var":"ThereIsMotion", "comp":"=","eq":"True"},"")]
+    ifStatements = [ifModule.IFModule(cvFace,{"var":"NumberOfFaces", "comp":"=","eq":"1"},[cvPicture])]
 
     while(True):
         ret,image = cvControl.cap.read()
@@ -33,8 +33,8 @@ if __name__ == '__main__':
         for ifS in ifStatements:
             result,drawList = ifS.testCondition(image)
             if result:
-                print True
-                #ifS.executeExpressions(image)
+                #print True
+                ifS.executeExpressions(image)
 
             image = drawResult(image,drawList,(0, 255, 0))
             cv2.imshow("Output", image)
