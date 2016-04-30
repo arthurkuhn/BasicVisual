@@ -81,7 +81,7 @@ class Window(QWidget):
         #Possible options
         self.possibleAlgos = ["Face Detect", "Body Detect", "Motion Detect"]
         self.possibleIfs = [["There Is A Face","Number Of Faces"],["There Is A Body","Number Of Bodies"],["There Is Motion"]]
-        self.possibleThen = ["Post Image To Facebook","Post Image To Dropbox","Send An Email","Log To Sheets","Send Text"]
+        self.possibleThen = ["Post Image To Facebook","Post Image To Dropbox","Send An Email","Log To Sheets","Send Text", "Send Yo"]
         
         
         self.listWidget = QListWidget()
@@ -139,6 +139,7 @@ class Window(QWidget):
         if not listItems: return        
         for item in listItems:
             self.listWidget.takeItem(self.listWidget.row(item))
+            del self.actionList[self.listWidget.row(item)-1]
     
     def conditionChosen(self):
         #Get the number of the chosen algo (to retrieve the choices)
