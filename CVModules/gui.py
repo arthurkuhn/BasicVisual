@@ -80,7 +80,7 @@ class Window(QWidget):
         #Possible options
         self.possibleAlgos = ["Face Detect", "Body Detect", "Motion Detect"]
         self.possibleIfs = [["There Is A Face","Number Of Faces"],["There Is A Body","Number Of Bodies"],["There Is Motion"]]
-        self.possibleThen = ["Post Image To Facebook","Post Image To Dropbox"]
+        self.possibleThen = ["Post Image To Facebook","Post Image To Dropbox","Send An Email","Log To Sheets"]
         
         
         self.listWidget = QListWidget()
@@ -155,5 +155,6 @@ class Window(QWidget):
 if __name__ == '__main__':
     import sys
     app = QApplication(sys.argv)
+    app.setStyle("motif")
     window = Window()
     sys.exit(app.exec_())
