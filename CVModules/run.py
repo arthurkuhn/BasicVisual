@@ -20,19 +20,21 @@ if __name__ == '__main__':
 
     cvControl = cvController.CVController()
     cvFace = cvFaceModule.FaceModule(cvControl.cap)
+    cvBody = cvBodyModule.BodyModule(cvControl.cap)
+    cvMotion = cvMotionModule.MotionModule(cvControl.cap)
 
-    ifStatement = ifModule.IFModule(cvFace,"","")
+    ifStatements = [ifModule.IFModule(cvMotion,{"var":"ThereIsMotion", "comp":"=","eq":"True"},"")]
 
     while(True):
         ret,image = cvControl.cap.read()
         image = imutils.resize(image, width=min(400, image.shape[1]))
+        for ifS in ifStatements:
+            result,drawList = ifS.testCondition(image)
+            if result:
+                ifS.executeExpressions()
 
-        result,drawList = ifStatement.testCondition(image)
-        if result:
-            print "Condition Met"
-
-        image = drawResult(image,drawList,(0, 255, 0))
-        cv2.imshow("Output", image)
+            image = drawResult(image,drawList,(0, 255, 0))
+            cv2.imshow("Output", image)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 

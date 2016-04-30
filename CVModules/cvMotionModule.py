@@ -8,16 +8,13 @@ import cvController
 class MotionModule(object):
 
     def __init__(self,cap):
-        #cvController.CVController.__init__(self)
         self.cap = cap
         self.isMotion = False
-        self.numObjects = 0
-
         self.toPrint = True
         self.currentFrame = None
         self.firstFrame = None
 
-    def run(self,image):
+    def run(self,image,condition):
 
         results = []
         frame = image
@@ -43,6 +40,30 @@ class MotionModule(object):
             if(z is not None):
                 results.append((z[0],z[1],z[2],z[3]))
 
+        if(len(results) > 0):
+            self.isMotion = True
+        else:
+            self.isMotion = False
+
         self.currentFrame = frame
 
-        return (True, results)
+        return (self.testCondition(condition), results)
+
+    def testCondition(self,condition):
+        variable = condition["var"]
+        comparison = condition["comp"]
+        equality = condition["eq"]
+
+        result = False
+        if (variable == "ThereIsMotion"):
+            eqFlag = False
+            if(equality == "True"):
+                eqFlag = True
+
+            if comparison == "=":
+                if(self.isMotion == eqFlag):
+                    result = True
+            elif comparison == "!=":
+                if(self.isMotion != eqFlag):
+                    result = True
+        return result

@@ -11,8 +11,13 @@ class IFModule(object):
     def __init__(self, cvMod,cond,expr):
         self.cvModule = cvMod
         self.condition = cond
-        self.expression = expr
+        self.expressions = expr
 
     def testCondition(self,frame):
-        result, drawList = self.cvModule.run(frame)
+        result, drawList = self.cvModule.run(frame,self.condition)
         return (result,drawList)
+
+    def executeExpressions(self):
+        print True
+        for exp in self.expressions:
+            print exp
