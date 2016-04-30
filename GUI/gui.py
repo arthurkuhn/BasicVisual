@@ -47,8 +47,8 @@ class Window(QWidget):
     
     def initUI(self):
         #Possible options
-        self.possibleAlgos = ["Recognize faces", "Recognize bodies"]
-        self.possibleIfs = [["num faces","is face"],["num bodies","is body"]]
+        self.possibleAlgos = ["Face Detect", "Body Detect", "Motion Detect"]
+        self.possibleIfs = [["There is a face","Number of faces"],["There is a body","Number of bodies"],["There is motion"]]
         self.possibleEquals = ["1","2","3"]
         self.possibleThen = ["Send to FB","Sent to Google Drive"]
         
@@ -66,36 +66,52 @@ class Window(QWidget):
         
         self.currActionsLabel = QLabel('Current Actions:')
         
+        #List With the possible algorithms
         self.conditions = QComboBox(self) 
         self.conditions.addItems(self.possibleAlgos)
-        #self.conditions.activated[str].connect(self.conditionChosen)
         
         self.listWidget = QListWidget()
 
         self.addAction_button = QPushButton('Add an action', self)
         self.addAction_button.clicked.connect(self.conditionChosen)
         
+        self.removeAction_button = QPushButton('Delete selected', self)
+        self.removeAction_button.clicked.connect(self.deleteCondition)
         
-        grid = QGridLayout()
-        grid.addWidget(self.currActionsLabel)
-        grid.addWidget(self.listWidget)
-        grid.addWidget(self.conditions)
-        grid.addWidget(self.addAction_button)
-        grid.addWidget(self.start_button)
-        grid.addWidget(self.end_button)
-        grid.addWidget(self.quit_button)
+        
+        listQVBox = QVBoxLayout()
+        listQVBox.addWidget(self.currActionsLabel)
+        listQVBox.addWidget(self.listWidget)
+        listQVBox.addWidget(self.conditions)
+        
+        algoActionButtons = QHBoxLayout()
+        algoActionButtons.addWidget(self.addAction_button)
+        algoActionButtons.addWidget(self.removeAction_button)
+        listQVBox.addLayout(algoActionButtons)
+        
+        videoActionButtons = QHBoxLayout()
+        videoActionButtons.addWidget(self.start_button)
+        videoActionButtons.addWidget(self.end_button)
+        videoActionButtons.addWidget(self.quit_button)
+        listQVBox.addLayout(videoActionButtons)
 
-        self.setLayout(grid)
+        self.setLayout(listQVBox)
         self.setGeometry(300,300,300,300)
         self.setWindowTitle('Facebook Sydney Hackathon')
         self.show()
         
+    def deleteCondition(self):
+        listItems=self.listWidget.selectedItems()
+        if not listItems: return        
+        for item in listItems:
+            self.listWidget.takeItem(self.listWidget.row(item))
+    
     def conditionChosen(self):
         #Get the number of the chosen algo (to retrieve the choices)
         chosen_algo = self.possibleAlgos.index(self.conditions.currentText())
-        myQCustomQWidget = QCustomQWidget(self)
+        myQCustomQWidget = QCustomDropDownWidget(self)
+        myQCustomQWidget.setAlgo(self.possibleAlgos[chosen_algo])
         myQCustomQWidget.setIfConditions(self.possibleIfs[chosen_algo])
-        myQCustomQWidget.setEqualConditions(self.possibleEquals)
         myQCustomQWidget.setThenConditions(self.possibleThen)
         myQListWidgetItem = QListWidgetItem(self.listWidget)
         myQListWidgetItem.setSizeHint(myQCustomQWidget.sizeHint())
