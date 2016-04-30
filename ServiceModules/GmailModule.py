@@ -32,22 +32,23 @@ class GmailModule:
 
     def sendEmail(self):
         try:
-           server = smtplib.SMTP('smtp.gmail.com', 587)
-           server.starttls()
-           server.login(self.sender, self.senderPassword)
+            server = smtplib.SMTP('smtp.gmail.com', 587)
+            server.starttls()
+            server.login(self.sender, self.senderPassword)
 
-           text = self.message.as_string()
-           server.sendmail(self.sender, self.receiver, text)
-           server.quit()
-           print "Successfully sent email"
+            text = self.message.as_string()
+            server.sendmail(self.sender, self.receiver, text)
+            server.quit()
+            print "Successfully sent email"
         except smtplib.SMTPException:
-           print "Error: unable to send email"
+            print "Error: unable to send email"
 
     def execute(self, image, name):
         subject = "Image from BasicVisual!"
         body = "Here is an image from Basic Visual."
         self.createMessage(subject, body)
 
-        imageFilename = name[:-4]
+        imageFilename = name.split("/")[-1]
         self.attachPhoto(name, imageFilename)
         self.sendEmail()
+
