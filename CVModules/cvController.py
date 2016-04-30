@@ -3,7 +3,9 @@ import imutils
 import numpy as np
 from imutils.object_detection import non_max_suppression
 from imutils import paths
+import cvBodyModule
 import cvFaceModule
+import cvMotionModule
 
 class CVController(object):
     def __init__(self):
@@ -13,7 +15,9 @@ class CVController(object):
         print 'Im in parent class'
 
 if __name__ == '__main__':
-    x = cvFaceModule.FaceModule()
+
+    y = CVController()
+    x = cvMotionModule.MotionModule(y.cap)
     x.start()
     self.cap.release()
     cv2.destroyAllWindows()

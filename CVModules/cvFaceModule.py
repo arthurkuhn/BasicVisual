@@ -3,13 +3,13 @@ import imutils
 import numpy as np
 from imutils.object_detection import non_max_suppression
 from imutils import paths
-#from cvController import CVController
 import cvController
 
-class FaceModule(cvController.CVController):
+class FaceModule(object):
 
-    def __init__(self):
-        cvController.CVController.__init__(self)
+    def __init__(self,cap):
+        #cvController.CVController.__init__(self)
+        self.cap = cap
         self.isFace = False
         self.numFaces = 0
         self.faceCasc = "../cascades/haarcascade_frontalface_default.xml"
@@ -37,6 +37,8 @@ class FaceModule(cvController.CVController):
                 self.isFace = True
             else:
                 self.isFace = False
+
+            numFace = len(faces)
 
             if(self.toPrint):
                 for (x, y, w, h) in faces:
