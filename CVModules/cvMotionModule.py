@@ -17,45 +17,32 @@ class MotionModule(object):
         self.currentFrame = None
         self.firstFrame = None
 
-    def start(self):
+    def run(self,image):
 
-        while(True):
+        results = []
+        frame = image
 
-            (grabbed, frame) = self.cap.read()
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray = cv2.GaussianBlur(gray, (21, 21), 0)
 
-            if not grabbed:
-        		break
+        if self.firstFrame is None:
+    		self.firstFrame = gray
+    		return (True,[])
 
-            frame = imutils.resize(frame, width=500)
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            gray = cv2.GaussianBlur(gray, (21, 21), 0)
+        frameDelta = cv2.absdiff(self.firstFrame, gray)
+        thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)[1]
 
-            if self.firstFrame is None:
-        		self.firstFrame = gray
-        		continue
+        thresh = cv2.dilate(thresh, None, iterations=2)
+        (cnts, _) = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+            cv2.CHAIN_APPROX_SIMPLE)
 
-            frameDelta = cv2.absdiff(self.firstFrame, gray)
-            thresh = cv2.threshold(frameDelta, 25, 255, cv2.THRESH_BINARY)[1]
+        for c in cnts:
+            z = None
+            if cv2.contourArea(c) >= 500:
+        		z = cv2.boundingRect(c)
+            if(z is not None):
+                results.append((z[0],z[1],z[2],z[3]))
 
-            thresh = cv2.dilate(thresh, None, iterations=2)
-            (cnts, _) = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
-                cv2.CHAIN_APPROX_SIMPLE)
+        self.currentFrame = frame
 
-            for c in cnts:
-
-            	if cv2.contourArea(c) < 500:
-            		continue
-
-            	(x, y, w, h) = cv2.boundingRect(c)
-            	cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
-
-                #cv2.putText(frame, "Room Status: {}".format(text), (10, 20),cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
-                #cv2.putText(frame, datetime.datetime.now().strftime("%A %d %B %Y %I:%M:%S%p"),(10, frame.shape[0] - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.35, (0, 0, 255), 1)
-
-                cv2.imshow("Output", frame)
-
-
-            self.currentFrame = frame
-
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
+        return (True, results)

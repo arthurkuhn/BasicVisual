@@ -6,14 +6,9 @@ from imutils import paths
 import cvBodyModule
 import cvFaceModule
 import cvMotionModule
+import cvController
 import ifModule
 
-
-class CVController(object):
-    def __init__(self):
-        self.cap = cv2.VideoCapture(0)
-
-'''
 def drawResult(image,parts,color):
 
     for (x, y, w, h) in parts:
@@ -21,32 +16,25 @@ def drawResult(image,parts,color):
 
     return image
 
-
 if __name__ == '__main__':
 
-    y = CVController()
-    x = cvFaceModule.FaceModule(y.cap)
-    z = cvBodyModule.BodyModule(y.cap)
-    b = cvMotionModule.MotionModule(y.cap)
+    cvControl = cvController.CVController()
+    cvFace = cvFaceModule.FaceModule(cvControl.cap)
 
-    ifStatement = ifModule.IFModule(x,"","")
+    ifStatement = ifModule.IFModule(cvFace,"","")
 
     while(True):
-        ret,image = y.cap.read()
+        ret,image = cvControl.cap.read()
         image = imutils.resize(image, width=min(400, image.shape[1]))
 
-        #result, drawList = x.run(image)
-        #result2,drawList2 = z.run(image)
-        result, drawList = ifStatement.testCondition(image)
+        result,drawList = ifStatement.testCondition(image)
+        if result:
+            print "Condition Met"
 
         image = drawResult(image,drawList,(0, 255, 0))
-        #image = drawResult(image,drawList2,(255, 0, 0))
-
         cv2.imshow("Output", image)
-
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
     self.cap.release()
     cv2.destroyAllWindows()
-'''
