@@ -36,8 +36,8 @@ def createIF( components):
         expression.append(cvTakePicture.PictureModule(30))
         expression.append(fbModule.FbModule())
     if(cond["expression"] == "PostImageToDropbox"):
-        expression.append(cvTakePicture.PictureModule())
-        #expression.append(DropboxModule.DropboxModule())
+        expression.append(cvTakePicture.PictureModule(30))
+        expression.append(DropboxModule.DropboxModule())
     
     return ifModule.IFModule(cvModule,cond,expression)
 
