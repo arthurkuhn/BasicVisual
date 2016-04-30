@@ -17,4 +17,4 @@ class SheetsModule:
         self.worksheet.update_cell(self.rows, 2, time)
         self.worksheet.update_cell(self.rows, 3, details)
         self.rows += 1
-        print str(self.rows) + "th row has been added."
+        print "Row " + str(self.row) + " has been added."

@@ -1,6 +1,7 @@
 import FbModule
 import GmailModule
 import SheetsModule
+import DropboxModule
 
 def runFbModule():
     f = FbModule.FbModule()
@@ -35,4 +36,13 @@ def runSheetsModule():
     s.updateCurrentRow("4th April 16", "8:10pm", "5 faces")
     s.updateCurrentRow("4th April 16", "8:10pm", "5 faces")
 
-runSheetsModule()
+def runDropbox():
+    accessToken = "BqdBFIVK9UAAAAAAAAAADXXX_FSPz_UTqzc-V870k403PoO1Lrr2reIfeBkJ16_a"
+    d = DropboxModule.DropboxModule(accessToken)
+
+    photoPath = "../photos/test-photo.jpg"
+    dropboxPath = "BasicVisual/test-photo.jpg"
+    d.uploadPhoto(photoPath, dropboxPath)
+
+
+runDropbox()
