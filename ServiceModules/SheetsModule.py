@@ -22,7 +22,8 @@ class SheetsModule:
         print "Row " + str(self.row) + " has been added."
 
     def execute(self, image, name):
-        filename = name[:-4]
+        filename = name.split("/")[-1]
+        filename = filename[:-4]
         dateVars = filename.split("_")
         date = ".".join(dataVars[0:3])
         time = ".".join(dataVars[3:])
