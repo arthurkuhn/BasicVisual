@@ -33,8 +33,8 @@ class DropboxSheetsModule:
 
     def execute(self, image, name):
         f = open(name, 'rb')
-        name = "BasicVisual/?preview="+name.split('/')[-1]
-        response = self.client.put_file(name, f)
+        dropboxPutLink = "BasicVisual/"+name.split('/')[-1]
+        response = self.client.put_file(dropboxPutLink, f)
         print response
         path = response["path"]
         print "Photo has been uploaded."
@@ -45,6 +45,6 @@ class DropboxSheetsModule:
         dateVars = filename.split("_")
         date = ".".join(dateVars[0:3])
         time = ".".join(dateVars[3:])
-        link = "www.dropbox.com/home" + path
+        link = "www.dropbox.com/home/BasicVisual?preview=" + name.split('/')[-1]
         self.updateCurrentRow(date, time, link)
         return "True"
