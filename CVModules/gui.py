@@ -14,6 +14,10 @@ from QCustomWidget import *
 import run
 import ifModule
 from BasicVisual.CVModules import ifCreator
+import os.path as osp
+import sys
+
+path = osp.join(osp.dirname(sys.modules[__name__].__file__), 'application-icon.png')
 
 class Capture():
     def __init__(self,):
@@ -22,8 +26,9 @@ class Capture():
 
     def startCapture(self, actionList):
         
-        #if(actionList.size()==0):
-        #    return
+        if(len(actionList)==0):
+            QMessageBox.about(QWidget(),"Error", "What are you doing? There are no actions!!!")
+            return
         
         ifModules = []
         
@@ -102,9 +107,6 @@ class Window(QWidget):
         self.start_button = QPushButton('Start', self)
         self.start_button.clicked.connect(self.run)
     
-        self.end_button = QPushButton('End', self)
-        self.end_button.clicked.connect(self.capture.endCapture)
-    
         self.quit_button = QPushButton('Quit', self)
         self.quit_button.clicked.connect(self.capture.quitCapture)
         
@@ -135,12 +137,11 @@ class Window(QWidget):
         
         videoActionButtons = QHBoxLayout()
         videoActionButtons.addWidget(self.start_button)
-        videoActionButtons.addWidget(self.end_button)
         videoActionButtons.addWidget(self.quit_button)
         listQVBox.addLayout(videoActionButtons)
 
         self.setLayout(listQVBox)
-        self.setGeometry(400, 400, 400, 400)
+        self.setGeometry(400, 500, 500, 500)
         self.setWindowTitle('Facebook Sydney Hackathon')
         self.center()
         self.show()
@@ -150,7 +151,7 @@ class Window(QWidget):
         if not listItems: return        
         for item in listItems:
             self.listWidget.takeItem(self.listWidget.row(item))
-            del self.actionList[self.listWidget.row(item)-1]
+            del self.actionList[self.listWidget.row(item)]
     
     def conditionChosen(self):
         # Get the number of the chosen algo (to retrieve the choices)
@@ -183,7 +184,7 @@ class Window(QWidget):
         self.move(frameGm.topLeft())
             
 if __name__ == '__main__':
-    import sys
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon(path))
     window = Window()
     sys.exit(app.exec_())

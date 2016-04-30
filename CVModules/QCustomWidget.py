@@ -164,7 +164,7 @@ class QCustomDropDownWidget (QWidget):
             obj2 = self.ifQHBoxLayout.replaceWidget(self.select, self.intEntryField)
             obj1.widget().deleteLater()
             obj2.widget().deleteLater()
-        elif 'is' in str:
+        elif 'Is' in str:
             print 'isNot'
             self.select = QComboBox()
             self.select.addItems(["True","False"])
