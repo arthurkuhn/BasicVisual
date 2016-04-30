@@ -22,9 +22,8 @@ class Capture():
 
     def startCapture(self, actionList):
         
-        if(actionList.isEmpty()):
-            print ''
-            continue
+        #if(actionList.size()==0):
+        #    return
         
         ifModules = []
         
